@@ -240,7 +240,7 @@ const Fasilitas = ({ auth, fasiltas }) => {
                                                                         </button>
                                                                     </div>
                                                                     <div className="relative p-6 flex-auto">
-                                                                        {/* ... */}
+                                                                      
                                                                         {/* Edit form fields */}
                                                                         <label className="block text-gray-700 text-sm font-bold mb-2">
                                                                             Title
@@ -297,21 +297,21 @@ const Fasilitas = ({ auth, fasiltas }) => {
                                                                                 formData.append('image', imageFile);
                                                                                 try {
                                                                                     await Inertia.patch(`/fasiltas/${editingItemId}`, formData);
-                                                                                    // Jika perubahan berhasil, perbarui fasiltasList
+                                                                                    
                                                                                     const updatedFasiltasList = fasiltasList.map(item => {
                                                                                         if (item.id === editingItemId) {
                                                                                             return {
                                                                                                 ...item,
                                                                                                 title: titleValue,
                                                                                                 description: descriptionValue,
-                                                                                                // Jika gambar diperbarui, Anda mungkin juga ingin memperbarui properti image
+                                                                                               
                                                                                             };
                                                                                         }
                                                                                         return item;
                                                                                     });
 
                                                                                     setFasiltasList(updatedFasiltasList);
-                                                                                    setUpdatedModalOpen(false); // Pindahkan baris ini di luar blok try
+                                                                                    setUpdatedModalOpen(false); 
                                                                                     console.log("After update:", updatedFasiltasList);
                                                                                     console.log("After update editingItemId:", editingItemId);
                                                                                     console.log("After update titleValue:", titleValue);

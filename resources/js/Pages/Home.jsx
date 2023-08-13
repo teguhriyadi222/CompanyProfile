@@ -31,8 +31,7 @@ export default function Home(props) {
             setMessage("");
             alert("Message sent successfully!");
         } catch (error) {
-            // Jika terjadi error saat mengirim pesan, Anda bisa menampilkan notifikasi error.
-            // Misalnya:
+
             alert("Error sending message. Please try again.");
         }
     };

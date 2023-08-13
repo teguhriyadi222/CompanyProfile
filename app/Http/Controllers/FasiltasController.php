@@ -72,7 +72,7 @@ class FasiltasController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            // lainnya
+         
         ]);
     
         $fasiltas->title = $request->input('title');
@@ -86,7 +86,7 @@ class FasiltasController extends Controller
         
         try {
             $fasiltas->save();
-            // lainnya
+          
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
