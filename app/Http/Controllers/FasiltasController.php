@@ -28,6 +28,7 @@ class FasiltasController extends Controller
     {
         return Inertia::render('CreateFasiltas');
     }
+    
 
     /**
      * Store a newly created resource in storage.

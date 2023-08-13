@@ -1,8 +1,12 @@
 <?php
 use App\Http\Controllers\FasiltasController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +17,13 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[FasiltasController::class,"index"]);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [FasiltasController::class, 'index']); 
+    Route::get('/message/create', [MessageController::class, 'create'])->name('message.create');
+    Route::post('/message', [MessageController::class, 'store'])->name('message.store');
+    
+    // ... Rute-rute lain yang memerlukan autentikasi dan verifikasi
+});
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),
@@ -28,12 +38,13 @@ Route::get('/',[FasiltasController::class,"index"]);
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [FasiltasController::class, 'show'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+    Route::get('/dashboard/message', [MessageController::class, 'index'])->name('dashboard.message');
     Route::get('/fasiltas/create', [FasiltasController::class, 'create'])->name('fasiltas.create');
     Route::post('/fasiltas', [FasiltasController::class, 'store'])->name('fasiltas.store');
     Route::delete('/fasiltas/{fasiltas}', [FasiltasController::class, 'destroy'])->name('fasiltas.destroy');
     Route::patch('/fasiltas/{fasiltas}', [FasiltasController::class, 'update'])->name('fasiltas.update');
-    
+    Route::delete('/message/{message}', [MessageController::class, 'destroy'])->name('message.destroy');
 });
 
 Route::middleware('auth')->group(function () {

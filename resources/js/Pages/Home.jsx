@@ -3,12 +3,40 @@ import { Link } from "@inertiajs/react";
 import Gallery from "@/Components/landingPage/Gallery";
 import Footer from "@/Components/landingPage/Footer";
 import Attractions from "@/Components/landingPage/Attractions";
+import { Inertia } from "@inertiajs/inertia";
+
+
+
 
 
 export default function Home(props) {
     console.log(props);
     const [navbar, setNavbar] = useState(false);
     const [activePage, setActivePage] = useState("home");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+
+    const handleMessageSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response =  await Inertia.post("/message", {
+                name: name,
+                email: email,
+                message: message,
+            });
+            setName("");
+            setEmail("");
+            setMessage("");
+            alert("Message sent successfully!");
+        } catch (error) {
+            // Jika terjadi error saat mengirim pesan, Anda bisa menampilkan notifikasi error.
+            // Misalnya:
+            alert("Error sending message. Please try again.");
+        }
+    };
+
 
     const handlePageChange = (page) => {
         setActivePage(page);
@@ -119,24 +147,33 @@ export default function Home(props) {
                                 <li className={`text-gray-600 ${activePage === "Contact" ? "px-4 py-2 text-white bg-[#F39F19] rounded-md" : "hover:px-4 py-2 hover:text-white hover:bg-[#F39F19] hover:rounded-md"}`}>
                                     <a href="#Contact" onClick={() => handlePageChange("Contact")}>Contact US</a>
                                 </li>
+                                <li className="flex space-x-2">
+                                    <Link
+                                        href={route('login')}
+                                        className="px-4 py-2 text-white bg-[#169870] rounded-md shadow hover:bg-gray-700 flex items-center"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                            <path fillRule="evenodd" d="M7.5 3.75A1.5 1.5 0 006 5.25v13.5a1.5 1.5 0 001.5 1.5h6a1.5 1.5 0 001.5-1.5V15a.75.75 0 011.5 0v3.75a3 3 0 01-3 3h-6a3 3 0 01-3-3V5.25a3 3 0 013-3h6a3 3 0 013 3V9A.75.75 0 0115 9V5.25a1.5 1.5 0 00-1.5-1.5h-6zm10.72 4.72a.75.75 0 011.06 0l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 11-1.06-1.06l1.72-1.72H9a.75.75 0 010-1.5h10.94l-1.72-1.72a.75.75 0 010-1.06z" clipRule="evenodd" />
+                                        </svg>
+
+                                        Sign in
+                                    </Link>
+                                    <Link
+                                        href={route('register')}
+                                        className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100 flex items-center"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 mr-2">
+                                            <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                                        </svg>
+                                        Sign up
+                                    </Link>
+
+                                </li>
                             </ul>
 
                         </div>
                     </div>
-                    <div className="hidden space-x-2 md:inline-block">
-                        <Link
-                            href={route('login')}
-                            className="px-4 py-2 text-white bg-[#169870] rounded-md shadow hover:bg-gray-800"
-                        >
-                            Sign in
-                        </Link>
-                        <Link
-                            href={route('register')}
-                            className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-                        >
-                            Sign up
-                        </Link>
-                    </div>
+
                 </div>
             </nav>
 
@@ -164,8 +201,7 @@ export default function Home(props) {
             <section id="about" className="bg-white">
                 <div className="mx-auto max-w-5xl px-6 py-16 text-center flex flex-col items-center">
                     <div className="mb-8">
-                        <h2 className="text-3xl font-semibold text-gray-800">About Us</h2>
-                        <div className="w-24 border-b-4 border-[#F39F19]"></div>
+                        <h2 className="text-3xl font-semibold text-gray-800 w-auto border-b-4 border-[#169870]">About Us</h2>
                     </div>
                     <div className="flex flex-col md:flex-row items-center">
                         <p className="mt-4 md:mt-0 md:mr-8 text-gray-600 md:text-left">
@@ -198,32 +234,52 @@ export default function Home(props) {
                 <section id="Contact" className="container mx-auto mt-20">
                     <div className="flex justify-center">
                         <div className="mb-12 flex flex-col items-center justify-center">
-                            <h2 className="text-3xl font-semibold text-gray-800">Contact Us</h2>
-                            <div className="w-24 border-b-4 border-[#F39F19]"></div>
+                            <h2 className="text-3xl font-semibold text-gray-800 w-auto border-b-4 border-[#169870]">Contact Us</h2>
+
                         </div>
                     </div>
 
                     <div className="flex flex-wrap">
                         <div className="mb-12 w-full grow-0 basis-auto md:px-3 lg:mb-0 lg:w-5/12 lg:px-6">
-                            <form>
+                            <form onSubmit={handleMessageSubmit}>
                                 <div className="relative mb-6" data-te-input-wrapper-init>
                                     <div className="mb-3 pt-0">
-                                        <input type="text" placeholder="Your Name" className="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border border-slate-300 outline-none focus:outline-none focus:ring w-full" />
+                                        <input
+                                            type="text"
+                                            placeholder="Your Name"
+                                            className="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border border-slate-300 outline-none focus:outline-none focus:ring w-full"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            required
+                                        />
                                     </div>
-
                                 </div>
                                 <div className="relative mb-6" data-te-input-wrapper-init>
                                     <div className="mb-3 pt-0">
-                                        <input type="text" placeholder="Email" className="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border border-slate-300 outline-none focus:outline-none focus:ring w-full" />
+                                        <input
+                                            type="text"
+                                            placeholder="Email"
+                                            className="px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border border-slate-300 outline-none focus:outline-none focus:ring w-full"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                        />
                                     </div>
                                 </div>
                                 <div className="relative mb-6" data-te-input-wrapper-init>
                                     <textarea
                                         className="peer block w-full rounded text-sm border border-slate-300 outline-none  px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                        rows="3" placeholder="Your message"></textarea>
+                                        rows="3"
+                                        placeholder="Your message"
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        required
+                                    ></textarea>
                                 </div>
 
-                                <button className="w-full bg-[#169870] text-white active:bg-[#F39F19] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"
+                                <button
+                                    className="w-full bg-[#169870] text-white active:bg-[#F39F19] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                    type="submit"
                                 >
                                     Send
                                 </button>
@@ -247,7 +303,7 @@ export default function Home(props) {
                                                 Technical support
                                             </p>
                                             <p className="text-neutral-500 dark:text-neutral-200">
-                                                support@example.com
+                                                support@gmail.com
                                             </p>
                                             <p className="text-neutral-500 dark:text-neutral-200">
                                                 +1 234-567-89
@@ -271,7 +327,7 @@ export default function Home(props) {
                                                 Sales questions
                                             </p>
                                             <p className="text-neutral-500 dark:text-neutral-200">
-                                                sales@example.com
+                                                sales@gmail.com
                                             </p>
                                             <p className="text-neutral-500 dark:text-neutral-200">
                                                 +1 234-567-89
@@ -319,7 +375,7 @@ export default function Home(props) {
                                         <div className="ml-6 grow">
                                             <p className="mb-2 font-bold dark:text-white">Bug report</p>
                                             <p className="text-neutral-500 dark:text-neutral-200">
-                                                bugs@example.com
+                                                bugs@gmail.com
                                             </p>
                                             <p className="text-neutral-500 dark:text-neutral-200">
                                                 +1 234-567-89
